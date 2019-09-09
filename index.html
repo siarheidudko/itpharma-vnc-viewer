@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>ITPharma VNC Viewer</title>
+		<link rel="stylesheet" href="bootstrap_4.0.0.css">
+		<link rel="stylesheet" href="ITPharmaVNCViewer.css">
+		<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+		<script src="jquery_3.4.1.js"></script> 
+		<script src="popper_1.12.9.js"></script> 
+		<script src="bootstrap_4.0.0.js"></script>
+		<script>if (window.module) module = window.module;</script>
+	</head>
+	<body>
+		<div class="modal fade" id="settingsConnModal" tabindex="-1" role="dialog" aria-labelledby="settingsConnModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="settingsConnModalLabel">Настройки соединения.</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<fieldset id="settingsConnViewonlyForm">
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text">
+											<input type="checkbox" id="settingsConnViewonly">
+										</div>
+									</div>
+									<text class="form-control">Только чтение (игнорировать ввод)</text>
+								</div>
+							</fieldset>
+							<fieldset id="settingsConnQuicksettingsForm">
+								<legend class="col-form-label col-sm-2 pt-0">Скорость соединения</legend>
+								<div class="form-group">
+									<select class="form-control" id="settingsConnQuicksettings">
+										<option value="1">Автоматически</option>
+										<option value="2">Локальная сеть (>1Mbit/s)</option>
+										<option value="3">Средняя скорость (>128Kbit/s)</option>
+										<option value="4">Модем (19-128Kbit/s)</option>
+										<option value="5">Медленное (<19Kbit/s)</option>
+										<option value="7">Максимальная (>2Mbit/s)</option>
+										<option value="8">Вручную</option>
+									</select>
+								</div>
+							</fieldset>
+							<fieldset id="settingsConnCompressionForm">
+								<legend class="col-form-label col-sm-2 pt-0">Уровень сжатия</legend>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnCompression" id="settingsConnCompression0" value="0">
+									<label class="form-check-label" for="settingsConnCompression0">0</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnCompression" id="settingsConnCompression1" value="1">
+									<label class="form-check-label" for="settingsConnCompression1">1</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnCompression" id="settingsConnCompression2" value="2">
+									<label class="form-check-label" for="settingsConnCompression2">2</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnCompression" id="settingsConnCompression3" value="3">
+									<label class="form-check-label" for="settingsConnCompression3">3</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnCompression" id="settingsConnCompression4" value="4">
+									<label class="form-check-label" for="settingsConnCompression4">4</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnCompression" id="settingsConnCompression5" value="5">
+									<label class="form-check-label" for="settingsConnCompression5">5</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnCompression" id="settingsConnCompression6" value="6">
+									<label class="form-check-label" for="settingsConnCompression6">6</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnCompression" id="settingsConnCompression7" value="7">
+									<label class="form-check-label" for="settingsConnCompression7">7</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnCompression" id="settingsConnCompression8" value="8">
+									<label class="form-check-label" for="settingsConnCompression8">8</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnCompression" id="settingsConnCompression9" value="9">
+									<label class="form-check-label" for="settingsConnCompression9">9</label>
+								</div>
+							</fieldset>
+							<fieldset id="settingsConnColorsForm">
+								<legend class="col-form-label col-sm-2 pt-0">Количество цветов</legend>
+								<div class="form-group">
+									<select class="form-control" id="settingsConnColors">
+										<option value="-full">32 бит</option>
+										<option value="-8bit">8 бит</option>
+										<option value="-256colors">256 цветов</option>
+										<option value="-64colors">64 цвета</option>
+										<option value="-8colors">8 цветов</option>
+										<option value="-8greycolors">8 оттенков серого</option>
+										<option value="-4greycolors">4 оттенка серого</option>
+										<option value="-2greycolors">2 оттенка серого</option>
+									</select>
+								</div>
+							</fieldset>
+							<fieldset id="settingsConnQualityForm">
+								<legend class="col-form-label col-sm-2 pt-0">Качество изображения</legend>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnQuality" id="settingsConnQuality0" value="0">
+									<label class="form-check-label" for="settingsConnQuality0">0</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnQuality" id="settingsConnQuality1" value="1">
+									<label class="form-check-label" for="settingsConnQuality1">1</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnQuality" id="settingsConnQuality2" value="2">
+									<label class="form-check-label" for="settingsConnQuality2">2</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnQuality" id="settingsConnQuality3" value="3">
+									<label class="form-check-label" for="settingsConnQuality3">3</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnQuality" id="settingsConnQuality4" value="4">
+									<label class="form-check-label" for="settingsConnQuality4">4</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnQuality" id="settingsConnQuality5" value="5">
+									<label class="form-check-label" for="settingsConnQuality5">5</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnQuality" id="settingsConnQuality6" value="6">
+									<label class="form-check-label" for="settingsConnQuality6">6</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnQuality" id="settingsConnQuality7" value="7">
+									<label class="form-check-label" for="settingsConnQuality7">7</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnQuality" id="settingsConnQuality8" value="8">
+									<label class="form-check-label" for="settingsConnQuality8">8</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="settingsConnQuality" id="settingsConnQuality9" value="9">
+									<label class="form-check-label" for="settingsConnQuality9">9</label>
+								</div>
+							</fieldset>
+						<form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" id="settingsConnReset" data-dismiss="modal">Закрыть</button>
+						<button type="button" class="btn btn-primary" id="settingsConnCommit">Сохранить</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="settingsModalLabel">Настройки синхронизации.</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<fieldset id="settingsSyncTypeForm">
+								<div class="form-group">
+									<select class="form-control" id="settingsSyncType">
+										<option value="file">Файл</option>
+										<option  value="url">URL</option>
+									</select>
+								</div>
+							</fieldset>
+							<fieldset id="settingsSyncPathForm">
+								<input type="text" class="form-control form-control-sm" id="settingsSyncPath" placeholder=".form-control-sm">
+							</fieldset>
+						</form>	
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" id="settingsSyncReset" data-dismiss="modal">Закрыть</button>
+						<button type="button" class="btn btn-primary" id="settingsSyncCommit">Сохранить</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content" id="smallModalText">
+				...
+				</div>
+			</div>
+		</div>
+		<div class="d-flex flex-column">
+			<div class="d-flex flex-row" id="myMenu">
+				<div class="flex-column w-10 p-1">
+					<button type="input" id="prew" class="btn btn-lg btn-block btn-outline-success"> <
+				</div>
+				<div class="flex-column w-100 p-1">
+					<div class="flex-row text-truncate font-weight-bold btn btn-lg btn-block btn-outline-success disabled" id="myListName"></div>
+				</div>
+				<div class="flex-column w-10 p-1">
+					<button type="input" id="next" class="btn btn-lg btn-block btn-outline-success"> >
+				</div>
+			</div>
+			<div class="d-flex flex-column p-1" id="mySearchList">
+				<input type="text" class="form-control" id="mySearchText" placeholder="Поиск...">
+			</div>
+			<div class="d-flex flex-column" id="myList">
+			</div>
+		</div>
+	</body>
+	<script>
+		try{
+			window.group = 0;
+			function renderMyList(c = 0, search = ''){
+				try{
+					//наименование группы
+					let listNameNode = document.getElementById("myListName");
+					let groups = Object.keys(window.processStorage.getState().groups);
+					listNameNode.innerHTML = '<text class="form-control-sm">'+window.processStorage.getState().names[groups[c]]+'<text>';
+					
+					let listNode = document.getElementById("myList");
+					//создание списка группы
+					if(window.processStorage.getState().groups[groups[c]]){
+						while (listNode.firstChild) {
+							listNode.removeChild(listNode.firstChild);
+						}
+						for(let i = 0; i < window.processStorage.getState().groups[groups[c]].length; i++){
+							if((search === "") || (window.processStorage.getState().names[window.processStorage.getState().groups[groups[c]][i]].toLowerCase().indexOf(search.toLowerCase()) !== -1)){
+								let oneListDivNode = document.createElement("div");
+								oneListDivNode.id = 'father_'+window.processStorage.getState().groups[groups[c]][i];
+								oneListDivNode.classList.add("flex-row", "p-1");
+								
+								let oneListBtnNode = document.createElement("button");
+								oneListBtnNode.id = window.processStorage.getState().groups[groups[c]][i];
+								oneListBtnNode.type = "input";
+								oneListBtnNode.value = window.processStorage.getState().groups[groups[c]][i];
+								oneListBtnNode.onclick = function () {
+									window.startVncClient(this.getAttribute("value"));
+								};
+								oneListBtnNode.innerHTML = window.processStorage.getState().names[window.processStorage.getState().groups[groups[c]][i]];
+								oneListBtnNode.classList.add("btn", "btn-outline-info", "btn-sm", "btn-block", "text-truncate");
+								
+								oneListDivNode.appendChild(oneListBtnNode);
+								listNode.appendChild(oneListDivNode);
+							}
+						}
+					}
+				} catch(err){
+					window.log('DISPLAY->renderMyList->'+err.toString());
+				}
+			}
+			//поиск
+			document.getElementById("mySearchText").addEventListener('keydown', function(e) {
+				try{
+					switch(e.key){
+						case 'Enter':
+						case 'Ent':
+							return renderMyList(window.group, document.getElementById("mySearchText").value);
+							break;
+						case 'Escape':
+						case 'Esc':
+							document.getElementById("mySearchText").value = "";
+							return renderMyList(window.group);
+							break;
+					}
+				} catch(err){
+					window.log('DISPLAY->searchListener->'+err.toString());
+				}
+			}, true);
+			//меню
+			document.getElementById("prew").addEventListener('click', function(e) {
+				try{
+					--window.group;
+					startRender();
+				} catch(err){
+					window.log('DISPLAY->prewListener->'+err.toString());
+				}
+			}, true);
+			document.getElementById("next").addEventListener('click', function(e) {
+				try{
+					++window.group;
+					startRender();
+				} catch(err){
+					window.log('DISPLAY->nextListener->'+err.toString());
+				}
+			}, true);
+			//настройки синхронизации
+			document.getElementById("settingsSyncCommit").addEventListener('click', function(e) {
+				try{
+					window.processStorage.dispatch({type:"SET_SYNC_SETTINGS", payload: {
+						pathtype: document.getElementById("settingsSyncType").value,
+						path: document.getElementById("settingsSyncPath").value
+					}});
+					setTimeout(window.renderSettingsWindow, 100);
+				} catch(err){
+					window.log('DISPLAY->settingsSyncCommitClick->'+err.toString());
+				}
+			}, true);
+			//настройки соединения
+			document.getElementById("settingsConnQuicksettings").addEventListener('change', function(e) {
+				if(document.getElementById("settingsConnQuicksettings").value === '8'){
+					document.getElementById("settingsConnCompressionForm").removeAttribute("disabled");
+					document.getElementById("settingsConnColorsForm").removeAttribute("disabled");
+					document.getElementById("settingsConnQualityForm").removeAttribute("disabled");
+				} else {
+					document.getElementById("settingsConnCompressionForm").setAttribute("disabled", "disabled");
+					document.getElementById("settingsConnColorsForm").setAttribute("disabled", "disabled");
+					document.getElementById("settingsConnQualityForm").setAttribute("disabled", "disabled");
+				}
+			});
+			document.getElementById("settingsConnCommit").addEventListener('click', function(e) {
+				try{
+					let quality, compresslevel;
+					let radiosQuality = document.getElementsByName('settingsConnQuality');
+					for (var i = 0, length = radiosQuality.length; i < length; i++){
+						if (radiosQuality[i].checked){
+							quality = radiosQuality[i].value;
+							break;
+						}
+					}
+					let radiosCompression = document.getElementsByName('settingsConnCompression');
+					for (var i = 0, length = radiosCompression.length; i < length; i++){
+						if (radiosCompression[i].checked){
+							compresslevel = radiosCompression[i].value;
+							break;
+						}
+					}
+					window.processStorage.dispatch({type:"SET_CONN_SETTINGS", payload: {
+						viewonly: document.getElementById("settingsConnViewonly").checked,
+						quickoption: document.getElementById("settingsConnQuicksettings").value,
+						compresslevel: compresslevel,
+						quality: quality,
+						colorsettings: document.getElementById("settingsConnColors").value
+					}});
+					setTimeout(window.renderSettingsConnWindow, 100);
+				} catch(err){
+					window.log('DISPLAY->settingsConnCommitClick->'+err.toString());
+				}
+			}, true);
+			function startRender(){
+				try{
+					if(window.group < 1){
+						document.getElementById("prew").disabled = true;
+					} else {
+						document.getElementById("prew").disabled = false;
+					}
+					if(window.group > (Object.keys(window.processStorage.getState().groups).length - 2)){
+						document.getElementById("next").disabled = true;
+					} else {
+						document.getElementById("next").disabled = false;
+					}
+					renderMyList(window.group);
+				} catch(err){
+					window.log('DISPLAY->startRender->'+err.toString());
+				}
+			}
+			startRender();
+			let sha1store;
+			window.processStorage.subscribe(function(){
+				let sha1tmp = window.hasher(JSON.stringify({names:window.processStorage.getState().names, connections:window.processStorage.getState().connections, groups:window.processStorage.getState().groups}));
+				if(sha1store !== sha1tmp){
+					sha1store = sha1tmp;
+					if(window.group > (Object.keys(window.processStorage.getState().groups).length - 1 )){
+						window.group = 0;
+					}
+					startRender();
+				}
+			});
+		} catch (err){
+			window.log('DISPLAY->global->'+err.toString());
+		}
+	</script>
+</html>

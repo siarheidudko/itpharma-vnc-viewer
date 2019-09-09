@@ -1,0 +1,53 @@
+{
+	"name": "ITPharmaVNCViewer",
+	"version": "1.0.2",
+	"description": "ITPharma VNC Viewer (Wrapper for TightVNC)",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron .",
+		"build": "ERASE dist /F/Q&&electron-builder"
+	},
+	"repository": "https://github.com/siarheidudko/itpharma-vnc-viewer",
+	"keywords": [
+		"Electron",
+		"vnc",
+		"TightVNC"
+	],
+	"author": "Siarhei Dudko",
+	"license": "Apache-2.0",
+	"build": {
+		"appId": "com.itpharma.vncviewer.app",
+		"productName": "ITPharma VNC Viewer",
+		"copyright": "Copyright © 2019 Siarhei Dudko",
+		"win": {
+			"icon": "ITPharmaVNCViewer.ico",
+			"artifactName":	"${productName} v${version} Setup.${ext}",
+			"target": ["nsis:ia32"]
+		},
+		"files": [
+			"**/*",
+			"!dist${/*}",
+			"!dist${\\*}",
+			"!dist${\\*}",
+			"!connections.json",
+			"!vncviewer.exe",
+			"!errors.log",
+			"!store.dmp"
+		],
+		"extraResources": [
+			"connections.json",
+			"vncviewer.exe"
+		]
+	},
+	"devDependencies": {
+		"electron": "^6.0.6"
+	},
+	"dependencies": {
+		"child_process": "^1.0.2",
+		"crypto": "^1.0.1",
+		"fs": "0.0.1-security",
+		"lodash": "^4.17.15",
+		"path": "^0.12.7",
+		"redux-cluster": "^1.7.0"
+	}
+}
