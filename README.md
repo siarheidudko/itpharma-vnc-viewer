@@ -8,22 +8,28 @@
 
 Программное обеспечение ITPharma VNC Viewer (далее ПО) позволяет инициализировать UltraVNCклиент с надстройками (Настройки->Настройки соединения) и предварительно заданными host, port, password, сохранять настройки соединения, а также синхронизировать настройки подключений с *.json-файлом или с помощью GET-запроса.
 
-Общий вид ПО:
+Общий вид ПО:  
+
 ![Screenshot_1](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_1.jpg)
 
-Меню ПО:
+Меню ПО:  
+
 ![Screenshot_2](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_2.jpg)
 
-Настройка соединения (отображения UltraVNC):
+Настройка соединения (отображения UltraVNC):  
+
 ![Screenshot_3](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_3.jpg)
 
-Настройка синхронизации данных (данные синхронизируются при запуске программы и кликом на Настройки->Обновить список соединений):
+Настройка синхронизации данных (данные синхронизируются при запуске программы и кликом на Настройки->Обновить список соединений):  
+
 ![Screenshot_4](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_4.jpg)
 
-Запуск приложения UltraVNC с надстройками (Прочее->Запустить VNCViewer):
+Запуск приложения UltraVNC с надстройками (Прочее->Запустить VNCViewer):  
+
 ![Screenshot_5](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_5.jpg)
 
-Поиск подключения (регистронезависимый, поиск только по текущей группе):
+Поиск подключения (регистронезависимый, поиск только по текущей группе):  
+
 ![Screenshot_6](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_6.jpg)
 
 ## Пример API для синхронизации (*.json-файл или get-запрос)
