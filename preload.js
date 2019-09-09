@@ -8,7 +8,7 @@ var child_process = require('child_process'),
 	lodash = require('lodash'),
 	crypto = require('crypto');
 	
-const {ipcRenderer, remote } = require('electron');
+const {ipcRenderer, remote, shell } = require('electron');
 
 //process.resourcesPath = __dirname;
 	
@@ -170,6 +170,13 @@ window.processStorage.backup(backupconf).catch(function(err){
 }).catch(function(err){
 	window.log('PRELOAD->processStorageBackup->'+err.toString());
 }).finally(function(){ 
+	window.openUrl = function(str){
+		try{
+			shell.openExternal(str);
+		} catch(err){
+			window.log('PRELOAD->openUrl->'+err.toString());
+		}
+	}
 	function setConnections(d){
 		let _conn = {
 			names: {	//sha1(name):name
@@ -340,6 +347,10 @@ window.processStorage.backup(backupconf).catch(function(err){
 			document.getElementById("settingsConnQualityForm").setAttribute("disabled", "disabled");
 		}
 	}
+	ipcRenderer.on('aboutVNCViewer', function(){
+		document.getElementById("m_version").innerHTML = 'Версия: <a href="" onclick="window.openUrl(\''+require(path.join(__dirname, 'package.json')).repository+'\');">'+require(path.join(__dirname, 'package.json')).version+'</a>';
+		$('#aboutModal').modal();
+	});
 	ipcRenderer.on('openSettingsWindow', function(){
 		window.renderSettingsWindow();
 		$('#settingsModal').modal();

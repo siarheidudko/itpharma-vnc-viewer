@@ -84,9 +84,15 @@ mainMenu = Menu.buildFromTemplate([
 		label: 'Прочее',
 		submenu: [
 			{
-				label: 'Запустить VNCViewer без надстроек',
+				label: 'Запустить VNCViewer',
 				click: function(){
 					mainWindow.webContents.send('execVNCViewer');
+				}
+			},
+			{
+				label: 'О программе',
+				click: function(){
+					mainWindow.webContents.send('aboutVNCViewer');
 				}
 			}
 		]

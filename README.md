@@ -1,12 +1,36 @@
 ## ITPharma VNC Viewer
 
-Wrapper for TightVNC Viewer
+Оболочка для UltraVNC Viewer на базе ElectronJS
 
-## EXAMPLE API (file or url) for synchronisation
+## Использование
+
+[Установщик](https://github.com/siarheidudko/itpharma-vnc-viewer/releases)
+
+Программное обеспечение ITPharma VNC Viewer (далее ПО) позволяет инициализировать UltraVNCклиент с надстройками (Настройки->Настройки соединения) и предварительно заданными host, port, password, сохранять настройки соединения, а также синхронизировать настройки подключений с *.json-файлом или с помощью GET-запроса.
+
+Общий вид ПО:
+![Screenshot_1](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_1.png)
+
+Меню ПО:
+![Screenshot_2](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_2.png)
+
+Настройка соединения (отображения UltraVNC):
+![Screenshot_3](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_3.png)
+
+Настройка синхронизации данных (данные синхронизируются при запуске программы и кликом на Настройки->Обновить список соединений):
+![Screenshot_4](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_4.png)
+
+Запуск приложения UltraVNC с надстройками (Прочее->Запустить VNCViewer):
+![Screenshot_5](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_5.png)
+
+Поиск подключения (регистронезависимый, поиск только по текущей группе):
+![Screenshot_6](https://github.com/siarheidudko/itpharma-vnc-viewer/raw/master/img/Screenshot_6.png)
+
+## Пример API для синхронизации (*.json-файл или get-запрос)
 ```
 {
-	"ООО \"Тест\"": {		//this is group
-		"ООО \"Тест\", Аптека 01": {	//this is name
+	"ООО \"Тест\"": {		//группа
+		"ООО \"Тест\", Аптека 01": {	//наименование
 			"host": "10.0.0.74",
 			"port": "5900",
 			"password": "jkh,jkghkjkh"
@@ -20,12 +44,7 @@ Wrapper for TightVNC Viewer
 }
 ```
 
-## License
+## Лицензирование
 
-Licensing Terms for this Software
 - Apache-2.0
-
-Licensing Terms for TightVNC
-There are two licensing options available for TightVNC software:
-- GNU General Public License version 2 (often abbreviated as GNU GPL). This is the default licensing option. It's completely free but it does not allow integration with closed-source products. Read the complete text of the license here (opens in a new window).
-- Commercial source code license. Unlike GPL, it allows integrating the software into proprietary products, although it's not free. Read more about commercial licensing.
+- [UltraVNC](https://www.uvnc.com/) бесплатен для ВСЕГО использования, это включает коммерческое использование.

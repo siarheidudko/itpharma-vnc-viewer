@@ -12,6 +12,23 @@
 		<script>if (window.module) module = window.module;</script>
 	</head>
 	<body>
+		<div class="modal fade" id="aboutModal" tabindex="-1"  aria-labelledby="aboutModalH" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="aboutModalH">О программе</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<text id="m_author">Автор: <a href="mailto:admin@sergdudko.tk">Siarhei Dudko</a></text><br />
+						<text id="m_version"></text><br />
+						<text><a href="" onclick="window.openUrl('https://itpharma.by');">ITPharma&copy;2019</a></text><br />
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="modal fade" id="settingsConnModal" tabindex="-1" role="dialog" aria-labelledby="settingsConnModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
