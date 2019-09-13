@@ -6,13 +6,18 @@ var child_process = require('child_process'),
 	reduxcluster = require('redux-cluster'),
 	path = require('path'),
 	lodash = require('lodash'),
-	crypto = require('crypto');
+	crypto = require('crypto'),
+	os = require('os');
 	
 const {ipcRenderer, remote, shell } = require('electron');
 
+const _dir = path.join(require('os').userInfo().homedir, '/.ITPharmaVNCViewer/');
+
+fs.mkdirSync(_dir, {recursive: true, mode: '0o655'});
+
 //process.resourcesPath = __dirname;
 	
-let logger = fs.createWriteStream(path.join(process.resourcesPath, 'errors.log'), {flags:"a+"});
+let logger = fs.createWriteStream(path.join(_dir, 'errors.log'), {flags:"a+"});
 
 function datetime() {
 	try {
@@ -137,7 +142,7 @@ function editProcessStorage(state = {
 window.processStorage = reduxcluster.createStore(editProcessStorage);
 
 let backupconf = {
-	path:path.join(process.resourcesPath, 'store.dmp'), 
+	path:path.join(_dir, 'store.dmp'), 
 	key:"BTYV^rV^R56D67uVR56v8r67v", 
 	timeout:5
 };
