@@ -11,9 +11,9 @@ var child_process = require('child_process'),
 	
 const {ipcRenderer, remote, shell } = require('electron');
 
-const _dir = path.join(require('os').userInfo().homedir, '/.ITPharmaVNCViewer/');
+const _dir = path.join(require('os').userInfo().homedir, '.ITPharmaVNCViewer');
 
-fs.mkdirSync(_dir, {recursive: true, mode: '0o655'});
+fs.mkdirSync(_dir, {recursive: true});
 
 //process.resourcesPath = __dirname;
 	
