@@ -375,7 +375,8 @@ window.processStorage.backup(backupconf).catch(function(err){
 			"15",
 			"-disablesponsor",
 			"-fttimeout",
-			"60"
+			"60",
+			"-autoscaling"
 		];
 		if(window.processStorage.getState().settings.viewonly === true){
 			params.push("-viewonly");
@@ -433,7 +434,8 @@ window.processStorage.backup(backupconf).catch(function(err){
 					"15",
 					"-disablesponsor",
 					"-fttimeout",
-					"60"
+					"60",
+					"-autoscaling"
 				];
 				if(window.processStorage.getState().settings.viewonly === true){
 					params.push("-viewonly");
