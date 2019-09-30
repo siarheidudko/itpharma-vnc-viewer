@@ -182,7 +182,7 @@ window.processStorage.backup(backupconf).catch(function(err){
 			window.log('PRELOAD->openUrl->'+err.toString());
 		}
 	}
-	function setConnections(d){
+	function setConnections(_d){
 		let _conn = {
 			names: {	//sha1(name):name
 			},
@@ -191,6 +191,20 @@ window.processStorage.backup(backupconf).catch(function(err){
 			groups: {	//sha1(name):[..Array of sha1(name)]
 			}
 		};
+		let sortObj = function(o){
+			let resultSort = {};
+			let keysForSort = Object.keys(o);
+			keysForSort = keysForSort.sort();
+			for(let i = 0; i < keysForSort.length; i++){
+				if(typeof(o[keysForSort[i]]) === 'object'){
+					resultSort[keysForSort[i]] = sortObj(o[keysForSort[i]]);
+				} else {
+					resultSort[keysForSort[i]] = o[keysForSort[i]];
+				}
+			}
+			return resultSort;
+		}
+		let d = sortObj(_d);
 		if((typeof(d) === 'object') && (!Array.isArray(d))){
 			for(const groupName in d){
 				let groupNameHash = hasher(groupName);
