@@ -182,6 +182,19 @@ window.processStorage.backup(backupconf).catch(function(err){
 			window.log('PRELOAD->openUrl->'+err.toString());
 		}
 	}
+	let sortObj = function(o){
+		let resultSort = {};
+		let keysForSort = Object.keys(o);
+		keysForSort = keysForSort.sort();
+		for(let i = 0; i < keysForSort.length; i++){
+			if(typeof(o[keysForSort[i]]) === 'object'){
+				resultSort[keysForSort[i]] = sortObj(o[keysForSort[i]]);
+			} else {
+				resultSort[keysForSort[i]] = o[keysForSort[i]];
+			}
+		}
+		return resultSort;
+	}
 	function setConnections(_d){
 		let _conn = {
 			names: {	//sha1(name):name
@@ -191,19 +204,6 @@ window.processStorage.backup(backupconf).catch(function(err){
 			groups: {	//sha1(name):[..Array of sha1(name)]
 			}
 		};
-		let sortObj = function(o){
-			let resultSort = {};
-			let keysForSort = Object.keys(o);
-			keysForSort = keysForSort.sort();
-			for(let i = 0; i < keysForSort.length; i++){
-				if(typeof(o[keysForSort[i]]) === 'object'){
-					resultSort[keysForSort[i]] = sortObj(o[keysForSort[i]]);
-				} else {
-					resultSort[keysForSort[i]] = o[keysForSort[i]];
-				}
-			}
-			return resultSort;
-		}
 		let d = sortObj(_d);
 		if((typeof(d) === 'object') && (!Array.isArray(d))){
 			for(const groupName in d){
@@ -234,49 +234,56 @@ window.processStorage.backup(backupconf).catch(function(err){
 			window.processStorage.dispatch({type:"SYNC_CONNECTIONS", payload:_conn});
 			return true;
 		} else {
-			window.log('PRELOAD->setConnections->d require type Object!');
-			return false;
+			return new Error('PRELOAD->setConnections->d require type Object!');
 		}
 	}
 	function reloadConnections(){
 		return new Promise(function(res, rej){
-			switch(window.processStorage.getState().settings.pathtype){ 
-				case 'file':
-					fs.readFile(window.processStorage.getState().settings.path, function(err, string){
-						if(err){
-							window.log('PRELOAD->reloadConnectionsFile->'+err.toString());
-							rej(err); 
-						} else {
-							let connections = JSON.parse(string);
-							if(setConnections(connections) === true){
+			if((typeof(window.processStorage.getState().settings.path) === 'string') && (window.processStorage.getState().settings.path !== '') && (window.processStorage.getState().settings.path !== '.')){
+				switch(window.processStorage.getState().settings.pathtype){ 
+					case 'file':
+						fs.readFile(window.processStorage.getState().settings.path, function(err, string){
+							if(err){
+								rej(err); 
+							} else {
+								try{
+									let connections = JSON.parse(string);
+									let updateFlg = setConnections(connections);
+									if(updateFlg === true){
+										res(true);
+									} else {
+										rej(updateFlg);
+									}
+								} catch(err){
+									rej(err);
+								}
+							}
+						});
+						break;
+					case 'url':
+						fetch(window.processStorage.getState().settings.path).then(function(response){
+							if((response.status).toString().substr(-3, 1) === "2"){
+								return response.json();
+							} else {
+								return new Promise(function(rs,rj){ rj(new Error(JSON.stringify(response))); });
+							}
+						}).then(function(json){
+							let updateFlg = setConnections(json);
+							if(updateFlg === true){
 								res(true);
 							} else {
-								rej(false);
+								rej(updateFlg);
 							}
-						}
-					});
-					break;
-				case 'url':
-					fetch(window.processStorage.getState().settings.path).then(function(response){
-						if((response.status).toString().substr(-3, 1) === "2"){
-							return response.json();
-						} else {
-							return new Promise(function(rs,rj){ rj(response); });
-						}
-					}).then(function(json){
-						if(setConnections(json) === true){
-							res(true);
-						} else {
-							rej(false);
-						}
-					}).catch(function(err){
-						window.log('PRELOAD->reloadConnectionsUrl->'+err.toString());
-						rej(err);
-					});
-					break;
-				default:
-					rej(false);
-					break;
+						}).catch(function(err){
+							rej(err);
+						});
+						break;
+					default:
+						rej(new Error('Patchtype "'+window.processStorage.getState().settings.pathtype+'" is not valid!'));
+						break;
+				}
+			} else {
+				res(true);
 			}
 		});
 	}
@@ -382,8 +389,18 @@ window.processStorage.backup(backupconf).catch(function(err){
 		reloadConnections().then(function(){
 		}).catch(function(err){
 			if(err){ 
-				window.log('PRELOAD->reloadConnections->'+err.toString()); 
-				document.getElementById("smallModalText").innerHTML = JSON.stringify(err);
+				let txt;
+				if(typeof(err) === 'string'){
+					txt = err; 
+				} else if(err instanceof Error){
+					txt = err.toString(); 
+				} else if(typeof(err) === 'object'){
+					txt = JSON.stringify(err);  
+				} else {
+					txt = 'Undefined error!';
+				}
+				window.log('PRELOAD->reloadConnections->'+txt); 
+				document.getElementById("smallModalText").innerHTML = txt;
 				$('#smallModal').modal();
 			}
 		});
@@ -427,7 +444,17 @@ window.processStorage.backup(backupconf).catch(function(err){
 				window.log('PRELOAD->childProcExitWitchNotNullCode->'+err.toString());
 		});
 	});
-	reloadConnections().catch(function(err){ if(err){ window.log('PRELOAD->reloadConnections->'+err.toString()); } });
+	reloadConnections().catch(function(err){
+		if(typeof(err) === 'string'){
+			window.log('PRELOAD->reloadConnections->'+err); 
+		} else if(err instanceof Error){
+			window.log('PRELOAD->reloadConnections->'+err.toString()); 
+		} else if(typeof(err) === 'object'){
+			window.log('PRELOAD->reloadConnections->'+JSON.stringify(err));  
+		} else {
+			window.log('PRELOAD->reloadConnections->Undefined error!');  
+		}
+	});
 	window.addEventListener('DOMContentLoaded', function(){
 		try{
 			const replaceText = function(selector, text) {
