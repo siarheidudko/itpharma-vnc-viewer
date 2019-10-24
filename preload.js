@@ -265,7 +265,7 @@ window.processStorage.backup(backupconf).catch(function(err){
 							if((response.status).toString().substr(-3, 1) === "2"){
 								return response.json();
 							} else {
-								return new Promise(function(rs,rj){ rj(new Error(JSON.stringify(response))); });
+								return new Promise(function(rs,rj){ rj(new Error(response.status+'['+response.statusText+']')); });
 							}
 						}).then(function(json){
 							let updateFlg = setConnections(json);
