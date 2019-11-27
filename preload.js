@@ -130,6 +130,9 @@ function editProcessStorage(state = {
 					}
 				}
 				break;
+			case 'SET_ALL_SETTINGS':
+				state_new = lodash.clone(action.payload);
+				break;
 		}
 //		window.log(JSON.stringify(state_new));
 		return state_new;
@@ -147,9 +150,9 @@ let backupconf = {
 	timeout:5
 };
 
-function hasher(data){
+function hasher(data, alg = "sha1"){
 	try{
-		const hash = crypto.createHash('sha1');
+		const hash = crypto.createHash(alg);
 		hash.update(data);
 		return(hash.digest('hex'));
 	} catch(e){
@@ -158,6 +161,22 @@ function hasher(data){
 	}
 }
 window.hasher = hasher;
+
+function encrypter(data, pass){
+	const cipher = crypto.createCipheriv('aes-256-ctr', window.hasher(pass, "sha256").toString('hex').slice(0, 32), window.hasher("t7n7nt678t786n6ffyfYRRVE%&$VE5674e64", "md5").toString('hex').slice(0, 16));
+	let encrypted = cipher.update(data, 'utf8', 'hex');
+	encrypted += cipher.final('hex');
+	return encrypted;
+}
+window.encrypter = encrypter;
+
+function decrypter(data, pass){
+	const cipher = crypto.createDecipheriv('aes-256-ctr', window.hasher(pass, "sha256").toString('hex').slice(0, 32), window.hasher("t7n7nt678t786n6ffyfYRRVE%&$VE5674e64", "md5").toString('hex').slice(0, 16));
+	let decrypted = cipher.update(data, 'hex', 'utf8');
+	decrypted += cipher.final('utf8');
+	return decrypted;
+}
+window.decrypter = decrypter;
 
 window.processStorage.backup(backupconf).catch(function(err){
 	window.log('PRELOAD->processStorageBackup->'+err.toString());
@@ -373,6 +392,30 @@ window.processStorage.backup(backupconf).catch(function(err){
 			document.getElementById("settingsConnQualityForm").setAttribute("disabled", "disabled");
 		}
 	}
+	function exportSettings(p){
+		return new Promise(function(res, rej){
+			let _settings = window.encrypter(JSON.stringify(window.processStorage.getState()), "F^5r6^%&5r6r567R56b6BR");
+			fs.promises.writeFile (p, _settings, {
+				encoding: 'utf8',
+				flag: 'w'
+			}).then(res).catch(rej);
+		});
+	}
+	function importSettings(p){
+		return new Promise(function(res, rej){
+			fs.promises.readFile (p, {
+				encoding: 'utf8',
+				flag: 'r'
+			}).then(function(f){
+				try{
+					let _settings = JSON.parse(window.decrypter(f, "F^5r6^%&5r6r567R56b6BR"));
+					window.processStorage.dispatch({type:"SET_ALL_SETTINGS", payload:_settings});
+				} catch (err){
+					rej(err);
+				}
+			}).catch(rej);
+		});
+	}
 	ipcRenderer.on('aboutVNCViewer', function(){
 		document.getElementById("m_version").innerHTML = 'Версия: <a href="" onclick="window.openUrl(\''+require(path.join(__dirname, 'package.json')).repository+'\');">'+require(path.join(__dirname, 'package.json')).version+'</a>';
 		$('#aboutModal').modal();
@@ -443,6 +486,50 @@ window.processStorage.backup(backupconf).catch(function(err){
 			if(typeof(exit) !== 'undefined')
 				window.log('PRELOAD->childProcExitWitchNotNullCode->'+err.toString());
 		});
+	});
+	ipcRenderer.on('exportSettings', function(e, p){
+		if(Array.isArray(p)){
+			exportSettings(p[0]).then(function(){
+			}).catch(function(err){
+				if(err){ 
+					let txt;
+					if(typeof(err) === 'string'){
+						txt = err; 
+					} else if(err instanceof Error){
+						txt = err.toString(); 
+					} else if(typeof(err) === 'object'){
+						txt = JSON.stringify(err);  
+					} else {
+						txt = 'Undefined error!';
+					}
+					window.log('PRELOAD->exportSettings->'+txt); 
+					document.getElementById("smallModalText").innerHTML = txt;
+					$('#smallModal').modal();
+				}
+			});
+		}
+	});
+	ipcRenderer.on('importSettings', function(e, p){
+		if(Array.isArray(p)){
+			importSettings(p[0]).then(function(){
+			}).catch(function(err){
+				if(err){ 
+					let txt;
+					if(typeof(err) === 'string'){
+						txt = err; 
+					} else if(err instanceof Error){
+						txt = err.toString(); 
+					} else if(typeof(err) === 'object'){
+						txt = JSON.stringify(err);  
+					} else {
+						txt = 'Undefined error!';
+					}
+					window.log('PRELOAD->exportSettings->'+txt); 
+					document.getElementById("smallModalText").innerHTML = txt;
+					$('#smallModal').modal();
+				}
+			});
+		}
 	});
 	reloadConnections().catch(function(err){
 		if(typeof(err) === 'string'){

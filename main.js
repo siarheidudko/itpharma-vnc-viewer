@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, Menu, ipcMain} = require('electron');
+const {app, BrowserWindow, Menu, ipcMain, dialog} = require('electron');
 const path = require('path');
+const os = require('os');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -76,6 +77,37 @@ mainMenu = Menu.buildFromTemplate([
 				label: 'Обновить список соединений',
 				click: function(){
 					mainWindow.webContents.send('reloadConnections');
+				}
+			},
+			{
+				label: 'Экспорт настроек',
+				click: function(){
+					dialog.showSaveDialog(mainWindow, {
+						title: 'Экспорт настроек',
+						defaultPath: os.homedir(),
+						filters: [
+							{ name: 'Файлы настроек (*.itpvnc)', extensions: ['itpvnc'] },
+							{ name: 'Все файлы', extensions: ['*'] }
+						]
+					}).then(function(res){
+						if(res.filePath) { mainWindow.webContents.send('exportSettings', [res.filePath]); }
+					}).catch(function(err){});
+				}
+			},
+			{
+				label: 'Импорт настроек',
+				click: function(){
+					dialog.showOpenDialog(mainWindow, {
+						title: 'Импорт настроек',
+						defaultPath: os.homedir(),
+						filters: [
+							{ name: 'Файлы настроек (*.itpvnc)', extensions: ['itpvnc'] },
+							{ name: 'Все файлы', extensions: ['*'] }
+						],
+						properties: ['openFile']
+					}).then(function(res){
+						if(Array.isArray(res.filePaths) && (res.filePaths.length > 0)) { mainWindow.webContents.send('importSettings', [res.filePaths[0]]); }
+					}).catch(function(err){});
 				}
 			}
 		]
