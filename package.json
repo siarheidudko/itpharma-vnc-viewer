@@ -1,6 +1,6 @@
 {
 	"name": "ITPharmaVNCViewer",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "ITPharma VNC Viewer (Wrapper for TightVNC)",
 	"main": "main.js",
 	"scripts": {
@@ -51,6 +51,6 @@
 		"lodash": "^4.17.15",
 		"os": "^0.1.1",
 		"path": "^0.12.7",
-		"redux-cluster": "^1.9.2"
+		"redux-cluster": "^1.10.0"
 	}
 }
