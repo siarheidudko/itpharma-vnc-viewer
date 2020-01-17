@@ -1,6 +1,6 @@
 {
 	"name": "ITPharmaVNCViewer",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "ITPharma VNC Viewer (Wrapper for TightVNC)",
 	"main": "main.js",
 	"scripts": {
@@ -45,6 +45,7 @@
 		"electron": "^6.0.6"
 	},
 	"dependencies": {
+		"@sergdudko/objectstream": "^1.7.7",
 		"child_process": "^1.0.2",
 		"crypto": "^1.0.1",
 		"fs": "0.0.1-security",
