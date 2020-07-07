@@ -42,7 +42,7 @@
 		]
 	},
 	"devDependencies": {
-		"electron": "^6.0.6"
+		"electron": "^7.2.4"
 	},
 	"dependencies": {
 		"@sergdudko/objectstream": "^1.7.7",
